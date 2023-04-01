@@ -30,6 +30,24 @@ const getPaises = async () => {
    paises.value = data.map((p) => p.name.common)
 }
 
+const obtenerEdad = (dateString)=> {
+   let hoy = new Date()
+   let fechaNacimiento = new Date(dateString)
+   let edad = hoy.getFullYear() - fechaNacimiento.getFullYear()
+   let diferenciaMeses = hoy.getMonth() - fechaNacimiento.getMonth()
+   if (
+      diferenciaMeses < 0 ||
+      (diferenciaMeses === 0 && hoy.getDate() < fechaNacimiento.getDate())
+   ) {
+      edad--
+   }
+   return edad
+}
+
+const validarForm = () => {
+
+}
+
 getPaises()
 
 const onFileFoto1 = (event) => {
@@ -48,7 +66,6 @@ const onSiguiente = () => {
 }
 
 const onAnterior = () => {
-   console.log('Si funciona pai', infoPersona.value)
    formGroup.value --;
 }
 
