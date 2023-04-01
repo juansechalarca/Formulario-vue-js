@@ -44,15 +44,15 @@ const onFileFoto2 = (event) => {
 }
 
 const onSiguiente = () => {
-   console.log( infoPersona.value)
-
    formGroup.value ++;
 }
+
 const onAnterior = () => {
    console.log('Si funciona pai', infoPersona.value)
-
    formGroup.value --;
 }
+
+const onEnviar = () => console.log( infoPersona.value);
 </script>
 
 <template>
@@ -172,6 +172,13 @@ const onAnterior = () => {
                class="px-2 py-1 font-semibold text-white transition duration-700 ease-in-out transform bg-indigo-600 rounded-md shadow-md hover:bg-indigo-700"
                @click="onAnterior"
                >Anterior</button>
+
+            <button 
+               v-if="formGroup === 3"
+               class="px-2 py-1 font-semibold text-white transition duration-700 ease-in-out transform bg-blue-600 rounded-md shadow-md hover:bg-blue-700"
+               @click="onEnviar"
+               >Enviar</button>
+
             <button 
             v-if="formGroup != 3"
                class="px-2 py-1 font-semibold text-white transition duration-700 ease-in-out transform bg-indigo-600 rounded-md shadow-md hover:bg-indigo-700"
