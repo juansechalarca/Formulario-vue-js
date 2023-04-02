@@ -100,7 +100,7 @@ const onEnviar = () =>{
 </script>
 
 <template>
-   <div class="flex items-center justify-center h-screen bg-indigo-600">
+   <div class="grid h-full place-items-center">
       <div class="p-6 bg-white rounded-md shadow-lg w-96">
          <h1 class="block text-xl font-semibold text-center">{{titulos[formGroup - 1].toUpperCase()}}</h1>
             <div class="flex items-center justify-center w-full">

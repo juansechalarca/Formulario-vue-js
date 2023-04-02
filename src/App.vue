@@ -7,3 +7,11 @@ import Form from './components/Form.vue'
 </template>
 
 
+<style lang="postcss">
+html,
+body,
+#app {
+  @apply h-full;
+  @apply bg-indigo-600;
+}
+</style>
