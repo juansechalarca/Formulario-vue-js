@@ -11,10 +11,10 @@ const infoPersona = ref({
    primerNombre: '',
    segundoNombre: '',
    tipoDoc:'Seleccione tipo documento',
-   numDoc:'',
+   numDoc: '',
    fechaNac: null,
-   fotoFrente: {},
-   fotoReverso: {},
+   fotoFrente: null,
+   fotoReverso: null,
    email:'',
    pass: '',
    confPass: '',
@@ -45,6 +45,16 @@ const obtenerEdad = (dateString)=> {
 }
 
 const validarForm = () => {
+   switch(formGroup.value){
+      case 1:
+         const {pais, sexo, primerNombre, segundoNombre, fechaNac, tipoDoc, numDoc, fotoFrente, fotoReverso } = infoPersona.value;
+         console.log( numDoc.toString().length)
+         if(pais&& sexo&& primerNombre&& segundoNombre&& fechaNac && obtenerEdad(fechaNac) >= 18 && tipoDoc&& numDoc&& numDoc.toString().length >= 5 && fotoFrente && fotoReverso ){
+            formGroup.value ++;
+         }
+      break;
+
+   }
 
 }
 
@@ -62,7 +72,7 @@ const onFileFoto2 = (event) => {
 }
 
 const onSiguiente = () => {
-   formGroup.value ++;
+   validarForm()
 }
 
 const onAnterior = () => {
@@ -73,11 +83,11 @@ const onEnviar = () => console.log( infoPersona.value);
 </script>
 
 <template>
-   <div class="flex items-center justify-center h-screen bg-indigo-600">
+   <div class="flex items-center justify-center bg-indigo-600 h-fit">
       <div class="p-6 bg-white rounded-md shadow-lg w-96">
          <h1 class="block text-xl font-semibold text-center">{{titulos[formGroup - 1].toUpperCase()}}</h1>
             <div class="flex items-center justify-center w-full">
-               <div class="flex items-center justify-center w-5 h-5 p-5 text-lg font-semibold text-center border border-4 border-gray-700 rounded-full">{{formGroup}}/3</div>
+               <div class="flex items-center justify-center w-3 h-3 p-5 text-lg text-center border border-2 border-gray-700 rounded-full font-md">{{formGroup}}/3</div>
             </div>
          <hr class="mt-3">
          <!-- GURPO 1 -->
@@ -85,63 +95,73 @@ const onEnviar = () => console.log( infoPersona.value);
             <div class="mt-3">
                <label for="pais" class="block mb-2 text-base">País</label>
                <select v-model="infoPersona.pais" id="pais" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600"  
-               :class="{'border-red-500': !infoPersona.pais, 'border-green-500': infoPersona.pais &&  infoPersona.pais !== 'Seleccione un país'}">
+              >
                   <option  disabled selected >Seleccione un país</option>
                   <option v-for="pais in paises" :key="pais" :value="pais">{{pais}}</option>
                </select>
+
+               <p v-if="!infoPersona.pais || infoPersona.pais === 'Seleccione un país'" class="text-xs text-red-500">*Campo obligatorio</p>
                
             </div>
             
             <div class="mt-3">
                <label for="sexo" class="block mb-2 text-base">Sexo</label>
                <select v-model="infoPersona.sexo" id="sexo" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600"  
-               :class="{'border-red-500': !infoPersona.sexo  , 'border-green-500': infoPersona.sexo &&  infoPersona.sexo !== 'Seleccione un sexo'}">
+               >
                   <option  disabled selected >Seleccione un sexo</option>
                   <option v-for="sexo in sexos" :key="sexo" :value="sexo">{{sexo}}</option>
                </select>
-               
+               <p v-if="!infoPersona.sexo || infoPersona.sexo === 'Seleccione un sexo'" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
             <div class="mt-3">
                <label for="primerNombre" class="block mb-2 text-base">Primer nombre</label>
                <input v-model="infoPersona.primerNombre" type="text" id="primerNombre" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Primer nombre" 
-               :class="{'border-red-500': !infoPersona.primerNombre, 'border-green-500': infoPersona.primerNombre}">
+              >
+               <p v-if="!infoPersona.primerNombre" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
             <div class="mt-3">
                <label for="segundoNombre" class="block mb-2 text-base">Segundo nombre</label>
                <input v-model="infoPersona.segundoNombre" type="text" id="segundoNombre" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Segundo nombre"
-                :class="{'border-red-500': !infoPersona.segundoNombre, 'border-green-500': infoPersona.segundoNombre}"
+                
                >
+               <p v-if="!infoPersona.segundoNombre" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
             <div class="mt-3">
                <label for="FechaNac" class="block mb-2 text-base">Fecha nacimiento</label>
                <input v-model="infoPersona.fechaNac"  type="date" id="FechaNac" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600"
-                :class="{'border-red-500': !infoPersona.fechaNac, 'border-green-500': infoPersona.fechaNac}"
+                
                >
+               <p v-if="!infoPersona.fechaNac" class="text-xs text-red-500">*Campo obligatorio</p>
+               <p v-if="obtenerEdad(infoPersona.fechaNac) < 18" class="text-xs text-red-500">*Debe ser mayor de edad</p>
             </div>
 
             <div class="mt-3">
                <label for="tipoDoc" class="block mb-2 text-base">Tipo documento</label>
                <select v-model="infoPersona.tipoDoc" name="" id="tipoDoc" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" 
-                :class="{'border-red-500': !infoPersona.tipoDoc , 'border-green-500': infoPersona.tipoDoc && infoPersona.tipoDoc !== 'Seleccione tipo documento'}">
+               >
                   <option  disabled selected >Seleccione tipo documento</option>
                   <option v-for="tipoDoc in tipoDocs" :key="tipoDoc" :value="tipoDoc">{{tipoDoc}}</option>
                </select>
-               
+               <p v-if="!infoPersona.tipoDoc || infoPersona.tipoDoc === 'Seleccione tipo documento' " class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
 
             <div class="mt-3">
                <label for="numDoc" class="block mb-2 text-base">Número documento</label>
-               <input v-model="infoPersona.numDoc" type="text" id="numDoc" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Número documento" 
-                :class="{'border-red-500': !infoPersona.numDoc, 'border-green-500': infoPersona.numDoc}">
+               <input v-model="infoPersona.numDoc" type="number" id="numDoc" min="0" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Número documento" 
+                >
+                <p v-if="!infoPersona.numDoc" class="text-xs text-red-500">*Campo obligatorio</p>
+                <p v-if="infoPersona.numDoc?.toString()?.length < 5" class="text-xs text-red-500">*El número debe tener como minimo 5 dígitos</p>
             </div>
 
             <div class="mt-3">
                <label for="fotoDoc1" class="block mb-2 text-base">Foto documento – Frente</label>
                <input @change="onFileFoto1" type="file" id="fotoDoc1" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600"  accept="image/jpg, image/png" >
+               <p v-if="!infoPersona.fotoFrente" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
             <div class="mt-3">
                <label for="fotoDoc2" class="block mb-2 text-base">Foto documento – Reverso</label>
                <input @change="onFileFoto2" type="file" id="fotoDoc2" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600"  accept="image/jpg, image/png" >
+               <p v-if="!infoPersona.fotoReverso" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
          </div>
 
