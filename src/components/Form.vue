@@ -174,11 +174,13 @@ const onEnviar = () =>{
                <label for="fotoDoc1" class="block mb-2 text-base">Foto documento – Frente</label>
                <input @change="onFileFoto1" type="file" id="fotoDoc1" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600"  accept="image/jpg, image/png" >
                <p v-if="!infoPersona.fotoFrente" class="text-xs text-red-500">*Campo obligatorio</p>
+               <p v-if="infoPersona.fotoFrente" class="text-xs text-green-500">{{infoPersona.fotoFrente.name}}</p>
             </div>
             <div class="mt-3">
                <label for="fotoDoc2" class="block mb-2 text-base">Foto documento – Reverso</label>
                <input @change="onFileFoto2" type="file" id="fotoDoc2" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600"  accept="image/jpg, image/png" >
                <p v-if="!infoPersona.fotoReverso" class="text-xs text-red-500">*Campo obligatorio</p>
+                <p v-if="infoPersona.fotoReverso" class="text-xs text-green-500">{{infoPersona.fotoFrente.name}}</p>
             </div>
          </div>
 
