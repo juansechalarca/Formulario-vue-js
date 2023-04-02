@@ -44,16 +44,30 @@ const obtenerEdad = (dateString)=> {
    return edad
 }
 
+const validarEmail = (email) =>{
+   if(email.search(/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/g) > -1)  return true;
+   return false
+}
+
+const validarContrasena = (cantra1, contra2) => {
+   if(cantra1 === contra2) return true
+   return false;
+}
+
 const validarForm = () => {
+   const {pais, sexo, primerNombre, segundoNombre, fechaNac, tipoDoc, numDoc, fotoFrente, fotoReverso, email,pass,confPass,telefono,celular } = infoPersona.value;
    switch(formGroup.value){
       case 1:
-         const {pais, sexo, primerNombre, segundoNombre, fechaNac, tipoDoc, numDoc, fotoFrente, fotoReverso } = infoPersona.value;
          console.log( numDoc.toString().length)
-         if(pais&& sexo&& primerNombre&& segundoNombre&& fechaNac && obtenerEdad(fechaNac) >= 18 && tipoDoc&& numDoc&& numDoc.toString().length >= 5 && fotoFrente && fotoReverso ){
+         if(pais&& sexo&& primerNombre&& segundoNombre&& fechaNac && obtenerEdad(fechaNac) >= 18 && tipoDoc&& numDoc&& numDoc.toString().length >= 5 && fotoFrente && fotoReverso )
             formGroup.value ++;
-         }
+         
       break;
 
+      case 2:
+
+        if(email && validarEmail(email) && pass && confPass && validarContrasena(pass,confPass) && telefono && celular) formGroup.value ++;
+      break;
    }
 
 }
@@ -79,7 +93,10 @@ const onAnterior = () => {
    formGroup.value --;
 }
 
-const onEnviar = () => console.log( infoPersona.value);
+const onEnviar = () =>{
+   alert('Se envió el registro correctamente')
+   console.log( infoPersona.value);
+} 
 </script>
 
 <template>
@@ -170,22 +187,30 @@ const onEnviar = () => console.log( infoPersona.value);
            <div class="mt-3">
                <label for="email" class="block mb-2 text-base">Correo eléctronico</label>
                <input   v-model="infoPersona.email"  type="email" id="email" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Correo eléctronico" >
+               <p v-if="!infoPersona.email" class="text-xs text-red-500">*Campo obligatorio</p>
+               <p v-if="!validarEmail(infoPersona.email)" class="text-xs text-red-500">*Correo invalido</p>
             </div>
            <div class="mt-3">
                <label for="pass" class="block mb-2 text-base">Contraseña</label>
                <input v-model="infoPersona.pass"  type="password" id="pass" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Contaseña">
+               <p v-if="!infoPersona.pass" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
            <div class="mt-3">
                <label for="pass" class="block mb-2 text-base">Confirmar contraseña</label>
                <input v-model="infoPersona.confPass"  type="password" id="pass" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Confirmar contraseña">
+               <p v-if="!infoPersona.confPass" class="text-xs text-red-500">*Campo obligatorio</p>
+               <p v-if="!validarContrasena(infoPersona.pass,infoPersona.confPass)" class="text-xs text-red-500">*Contraseña invalida</p>
+           
             </div>
            <div class="mt-3">
                <label for="telefono" class="block mb-2 text-base">Teléfono</label>
-               <input v-model="infoPersona.telefono"  type="text" id="telefono" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Teléfono">
+               <input v-model="infoPersona.telefono"  type="number" id="telefono" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Teléfono">
+               <p v-if="!infoPersona.telefono" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
            <div class="mt-3">
                <label for="celular" class="block mb-2 text-base">Celular</label>
-               <input v-model="infoPersona.celular"  type="text" id="celular" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Celular">
+               <input v-model="infoPersona.celular"  type="number" id="celular" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Celular">
+                <p v-if="!infoPersona.celular" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
          </div>
 
@@ -195,10 +220,12 @@ const onEnviar = () => console.log( infoPersona.value);
            <div class="mt-3">
                <label for="direccion" class="block mb-2 text-base">Dirección</label>
                <input v-model="infoPersona.direccion"  type="text" id="direccion" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Dirección">
+               <p v-if="!infoPersona.direccion" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
            <div class="mt-3">
                <label for="codPostal" class="block mb-2 text-base">Código postal</label>
                <input v-model="infoPersona.codPostal"  type="text" id="codPostal" class="w-full px-2 py-1 text-base border focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Código postal">
+                <p v-if="!infoPersona.codPostal" class="text-xs text-red-500">*Campo obligatorio</p>
             </div>
          </div>
           <hr class="mt-3">
@@ -211,7 +238,7 @@ const onEnviar = () => console.log( infoPersona.value);
                >Anterior</button>
 
             <button 
-               v-if="formGroup === 3"
+               v-if="formGroup === 3 && infoPersona.direccion && infoPersona.codPostal "
                class="px-2 py-1 font-semibold text-white transition duration-700 ease-in-out transform bg-blue-600 rounded-md shadow-md hover:bg-blue-700"
                @click="onEnviar"
                >Enviar</button>
