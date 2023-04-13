@@ -1,9 +1,10 @@
 <script setup>
-import Form from './components/Form.vue'
+
+import Test from './components/Test.vue'
 </script>
 
 <template>
-  <Form />
+   <Test/>
 </template>
 
 
@@ -11,7 +12,11 @@ import Form from './components/Form.vue'
 html,
 body,
 #app {
-  @apply h-full;
-  @apply bg-indigo-600;
+  @apply h-full ;
+ 
+}
+
+#app{
+   @apply bg-[url('@/assets/fondo.jpg')] bg-cover bg-no-repeat bg-bottom bg-fixed
 }
 </style>
